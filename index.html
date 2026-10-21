@@ -646,15 +646,34 @@ main{display:block}
  .l-sp1{left:auto;right:6%;top:4%}
 }
 
-/* ===== PHONE LOGOS: a tidy 3-column logo wall with hairline cells instead of a long column of giant logos ===== */
+/* ===== PHONE LOGOS: same idea as desktop. The title sits in the middle and the logos float around it,
+   placed by hand so nothing overlaps; no grid, no boxes. ===== */
 @media (max-width:699px){
- .corbs{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1.5px solid var(--border-soft);border-left:1.5px solid var(--border-soft)}
- .corb{width:100%;height:clamp(64px,19vw,84px);display:grid;place-items:center;padding:10px 8px;border-right:1.5px solid var(--border-soft);border-bottom:1.5px solid var(--border-soft);transform:none!important}
- .js .corbs:not(.in) .corb{transform:scale(.7)!important}
- .corb img,.corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img,.corb.logo-whites img,.corb.logo-ministry img,.corb.logo-deef img{max-width:86%;max-height:34px;width:auto;height:auto}
- .corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:44px}
- .corb.logo-deef img{max-height:26px}
- .cring{gap:26px}
+ .cring{height:min(205vw,860px);display:block;container-type:normal}
+ .cring-mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;width:100%}
+ .cring-mid h2{font-size:clamp(2.6rem,13vw,3.6rem)!important;margin:0 0 10px!important}
+ .corbs{display:block;position:absolute;inset:0;border:0}
+ .corb,.js .corbs:not(.in) .corb{position:absolute;left:var(--mx);top:var(--my);width:auto;height:auto;padding:0;border:0;transform:translate(-50%,-50%) rotate(var(--r,0deg))!important}
+ .js .corbs:not(.in) .corb{transform:translate(-50%,-50%) rotate(var(--r,0deg)) scale(.5)!important}
+ .corb img,.corb.logo-whites img,.corb.logo-ministry img{max-width:30vw;max-height:9vw;width:auto;height:auto}
+ .corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:12vw}
+ .corb.logo-deef img{max-height:8vw;max-width:28vw}
+ .corb.logo-whites img,.corb.logo-ministry img{max-width:36vw}
+ .corb.logo-kazyon{--mx:28%;--my:5%}
+ .corb.logo-lulu{--mx:74%;--my:5%}
+ .corb.logo-misr-pharmacies{--mx:70%;--my:14%}
+ .corb.logo-noush{--mx:24%;--my:14%}
+ .corb.logo-egypt-foods{--mx:26%;--my:23.5%}
+ .corb.logo-elvan{--mx:75%;--my:23.5%}
+ .corb.logo-al-amal-al-sharif{--mx:26%;--my:68%}
+ .corb.logo-pharco{--mx:76%;--my:68%}
+ .corb.logo-amoun{--mx:74%;--my:77%}
+ .corb.logo-acino{--mx:27%;--my:77%}
+ .corb.logo-whites{--mx:29%;--my:86%}
+ .corb.logo-ministry{--mx:29%;--my:95.5%}
+ .corb.logo-ministry-culture{--mx:75%;--my:95%}
+ .corb.logo-alcon{--mx:76%;--my:86%}
+ .corb.logo-deef{--mx:50%;--my:32%}
 }
 </style>
 </head>
