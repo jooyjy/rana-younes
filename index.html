@@ -663,9 +663,10 @@ main{display:block}
  .ps-whites img,.ps-ministry img{max-height:30px}
 }
 @media (max-width:699px) and (prefers-reduced-motion:no-preference){
- .pstrip-track{animation:psRun var(--d,32s) linear infinite}
- .pstrip-track.rev{animation-direction:reverse}
- @keyframes psRun{to{transform:translate3d(-50%,0,0)}}
+ .pstrip-row{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+ .pstrip-row.drag{cursor:grabbing}
+ .pstrip-track{will-change:transform}
+ .ps img{pointer-events:none;-webkit-user-drag:none}
 }
 @media (max-width:699px) and (prefers-reduced-motion:reduce){
  .pstrip{-webkit-mask-image:none;mask-image:none;margin:6px 0 0}
@@ -1011,6 +1012,30 @@ dlg.addEventListener("cancel",function(e){e.preventDefault();closePD()});
 dlg.addEventListener("click",function(e){if(e.target===dlg)closePD()});
 addEventListener("popstate",function(){var m=/^#project-(\d\d)$/.exec(location.hash);if(m)openPD(m[1],true);else closePD(true)});
 var m0=/^#project-(\d\d)$/.exec(location.hash);if(m0&&$('.card[data-id="'+m0[1]+'"]')){$("#work").scrollIntoView();openPD(m0[1],true)}
+
+
+/* Phone client rows: each row drifts on its own and can be grabbed and flung left or right; after letting go it
+   glides with momentum and eases back to its cruising speed. Vertical scrolling still works (touch-action: pan-y). */
+(function(){var rows=[].slice.call(document.querySelectorAll(".pstrip-row"));if(!rows.length||matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+ var R=rows.map(function(row,i){var tr=row.querySelector(".pstrip-track"),cruise=(i%2?1:-1)*(26+i*3);return{row:row,tr:tr,x:0,v:cruise,cruise:cruise,half:0,drag:false,lx:0,lt:0,vs:0}});
+ function measure(){R.forEach(function(r){r.half=r.tr.scrollWidth/2})}
+ var last=0,raf=0,vis=true;
+ function frame(t){raf=0;var dt=Math.min(.05,(t-(last||t))/1000);last=t;
+  R.forEach(function(r){if(!r.half)return;if(!r.drag){r.v+=(r.cruise-r.v)*Math.min(1,dt*1.6);r.x+=r.v*dt}
+   r.x=((r.x%r.half)+r.half)%r.half-r.half;r.tr.style.transform="translate3d("+r.x.toFixed(1)+"px,0,0)"});
+  if(vis&&getComputedStyle(rows[0].parentNode).display!=="none")raf=requestAnimationFrame(frame);else last=0}
+ R.forEach(function(r){var id=null,sx=0,sy=0,dec=false;
+  r.row.addEventListener("pointerdown",function(e){id=e.pointerId;sx=e.clientX;sy=e.clientY;dec=false;r.lx=e.clientX;r.lt=performance.now();r.vs=0});
+  r.row.addEventListener("pointermove",function(e){if(e.pointerId!==id)return;
+   if(!dec){var dx=Math.abs(e.clientX-sx),dy=Math.abs(e.clientY-sy);if(dx<6&&dy<6)return;dec=true;if(dy>dx){id=null;return}
+    r.drag=true;r.row.classList.add("drag");try{r.row.setPointerCapture(e.pointerId)}catch(_){}}
+   if(!r.drag)return;var now=performance.now(),d=e.clientX-r.lx;r.x+=d;var el=Math.max(1,now-r.lt);r.vs=r.vs*.6+(d/el*1000)*.4;r.lx=e.clientX;r.lt=now;e.preventDefault();if(!raf)raf=requestAnimationFrame(frame)});
+  function up(e){if(e.pointerId!==id)return;id=null;if(r.drag){r.drag=false;r.row.classList.remove("drag");r.v=Math.max(-1600,Math.min(1600,r.vs))}}
+  r.row.addEventListener("pointerup",up);r.row.addEventListener("pointercancel",up)});
+ if("IntersectionObserver" in window){new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis&&!raf){last=0;raf=requestAnimationFrame(frame)}}).observe(rows[0].parentNode)}
+ addEventListener("resize",function(){measure();if(!raf){last=0;raf=requestAnimationFrame(frame)}});
+ if(document.readyState==="complete")measure();addEventListener("load",function(){measure();if(!raf)raf=requestAnimationFrame(frame)});
+ measure();raf=requestAnimationFrame(frame)})();
 
 /* ================= PHASE 3 ================= */
 /* Magnetic buttons: pointer within a small halo pulls the button up to 9px. Desktop mouse only. */
