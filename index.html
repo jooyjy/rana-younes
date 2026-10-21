@@ -673,6 +673,12 @@ main{display:block}
  .pstrip-track{width:auto;flex-wrap:wrap;justify-content:center}
  .pstrip-track .ps:nth-child(n+6){display:none}
 }
+
+/* ===== the name: bigger, in the display face, with the pink mark, so it reads as the brand ===== */
+.sig-name{font:400 clamp(2.2rem,3.4vw,3.4rem)/.9 var(--font-display);letter-spacing:.01em;gap:.18em}
+.sig-name .sig-mark{width:.62em;height:.62em}
+.sig-mark path{stroke-width:3.6}
+@media (max-width:699px){.sig-name{font-size:clamp(2.3rem,11vw,3rem)}}
 </style>
 </head>
 <body>
