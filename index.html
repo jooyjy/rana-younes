@@ -491,6 +491,25 @@ main{display:block}
  /* sound switch: top right, out of the reading path */
  .stoggle{top:calc(12px + env(safe-area-inset-top,0px));bottom:auto;transform:scale(.82);transform-origin:100% 0}
 }
+
+/* ===== FIT TO SCREEN (desktop and laptop): at 100% zoom every section fits one screen height.
+   Type and spacing follow the screen height as well as its width, so short laptop screens get a smaller scale. ===== */
+@media (min-width:700px){
+ .sec{padding-top:clamp(40px,7.5vh,96px);padding-bottom:clamp(40px,7.5vh,96px)}
+ .slant{padding-top:calc(var(--cut) + clamp(40px,7.5vh,96px))}
+ .sec h2{font-size:clamp(2.6rem,min(6.6vw,11.5vh),7rem);margin:10px 0 clamp(16px,3vh,36px)}
+ .outline{font-size:clamp(5rem,min(15vw,26vh),15rem)}
+ /* showreel: the video is as wide as the screen height allows */
+ .reel-wrap{max-width:min(100%,calc((100svh - var(--cut) - clamp(80px,15vh,192px) - clamp(2.6rem,min(6.6vw,11.5vh),7rem) * 1.9 - 60px) * 16 / 9));margin-inline:auto}
+ /* work: one row; the TVC takes half the width, the two campaigns a quarter each */
+ .work-grid{row-gap:clamp(28px,4vh,48px);max-width:min(100%,calc((100svh - clamp(80px,15vh,192px) - clamp(2.6rem,min(6.6vw,11.5vh),7rem) * 1.9 - 74px - var(--cut)) * 32 / 9));margin-inline:0}
+ #work{padding-bottom:calc(var(--cut) * .8 + clamp(24px,4vh,60px))}
+ .w-a{grid-column:1/7;grid-row:1}
+ .w-c{grid-column:7/10;grid-row:1}
+ .w-d{grid-column:10/13;grid-row:1;margin-top:0}
+ .w-a .ttl-wrap{font-size:clamp(1.8rem,min(3vw,5.4vh),3.4rem)}
+ .w-c .ttl-wrap,.w-d .ttl-wrap{font-size:clamp(1.1rem,min(1.6vw,2.9vh),1.8rem)}
+}
 </style>
 </head>
 <body>
