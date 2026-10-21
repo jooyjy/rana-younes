@@ -608,6 +608,17 @@ main{display:block}
  @keyframes cEar{0%,88%,100%{transform:none}90%{transform:rotate(-4deg)}92%{transform:rotate(3deg)}94%{transform:none}}
 }
 .c-eyes{transform-origin:55px 50px}
+
+/* 3D cat canvas (cat3d.js); the SVG cat stays as the fallback */
+.cat3d{position:absolute;left:0;bottom:0;pointer-events:none;z-index:0}
+.cat-run.has3d .cat-mover{z-index:2}
+.cat-run.has3d .cat-btn svg{opacity:0}
+/* labels sit above the cat's back, on the side away from her face */
+.cat-run.has3d .catch-tag,.cat-run.has3d .cat-mover .meow{bottom:78%;transition:opacity .2s,left .3s,right .3s}
+.cat-run.has3d .catch-tag{transform:rotate(-5deg)}
+.cat-run.has3d[data-face="r"] .catch-tag,.cat-run.has3d[data-face="r"] .cat-mover .meow{left:auto;right:58%}
+.cat-run.has3d[data-face="l"] .catch-tag,.cat-run.has3d[data-face="l"] .cat-mover .meow{right:auto;left:58%}
+.cat-run.has3d.caught .catch-tag{opacity:0}
 </style>
 </head>
 <body>
@@ -995,7 +1006,7 @@ catBtn.addEventListener("click",function(){catRun.classList.add("caught");catBur
 
 /* Cat roaming: she sits, looks around, then strolls to a new spot along the line with a soft waddle,
    turning smoothly to face where she goes. Hover or a tap makes her stop; she rests while the hero is off screen. */
-(function(){if(rm||!catRun||!catMover)return;
+window.__catRoam2D=function(){if(rm||!catRun||!catMover||window.__catRoamOn)return;window.__catRoamOn=1;
  var flip=catMover.querySelector(".cat-flip"),svg=catBtn.querySelector("svg"),paw=svg.querySelector(".c-paw"),foot=svg.querySelector(".c-foot"),tail=svg.querySelector(".c-tail"),
   x=0,face=1,faceNow=1,state="sit",until=performance.now()+1800,from=0,to=0,dist=0,walked=0,phase=0,last=0,hold=false,vis=true,raf2=0;
  function run(){return Math.max(0,catRun.clientWidth-catMover.offsetWidth)}
@@ -1016,7 +1027,8 @@ catBtn.addEventListener("click",function(){catRun.classList.add("caught");catBur
  catBtn.addEventListener("pointerenter",function(){hold=true});catBtn.addEventListener("pointerleave",function(){hold=false});
  catBtn.addEventListener("click",function(){if(paw)paw.style.transform=""});
  if("IntersectionObserver" in window){var io2=new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis&&!raf2){last=0;raf2=requestAnimationFrame(step)}});io2.observe(catRun)}
- raf2=requestAnimationFrame(step)})();
+ raf2=requestAnimationFrame(step)};
+if(!window.WebGLRenderingContext)window.__catRoam2D();
 
 /* ================= PHASE 3 ================= */
 /* Magnetic buttons: pointer within a small halo pulls the button up to 9px. Desktop mouse only. */
@@ -1106,5 +1118,6 @@ window.RanaPortfolio={destroy:function(){
  [stage,collage].forEach(function(e){e.style.opacity="";e.style.transform=""});L.forEach(function(l){l.el.style.transform=""})}};
 })();
 </script>
+<script src="cat3d.js" defer></script>
 </body>
 </html>
