@@ -619,6 +619,17 @@ main{display:block}
 .cat-run.has3d[data-face="r"] .catch-tag,.cat-run.has3d[data-face="r"] .cat-mover .meow{left:auto;right:58%}
 .cat-run.has3d[data-face="l"] .catch-tag,.cat-run.has3d[data-face="l"] .cat-mover .meow{right:auto;left:58%}
 .cat-run.has3d.caught .catch-tag{opacity:0}
+
+/* ===== PHONE HERO: words first. Name, headline, line, CTA and the cat all fit the first screen;
+   the portrait follows right after instead of filling the whole first screen. ===== */
+@media (max-width:699px){
+ .hero .stage{order:1;padding-top:clamp(18px,4vh,30px)}
+ .hero .collage{order:2;margin-top:6px;aspect-ratio:1/.92}
+ .hero h1{font-size:clamp(2.6rem,13.2vw,3.7rem)}
+ .hero .sub{margin:12px 0 16px;font-size:1.05rem}
+ .hero .cta-row{gap:10px}
+ .cat-run{height:clamp(96px,13vh,120px)}
+}
 </style>
 </head>
 <body>
@@ -938,8 +949,9 @@ measure();
 function frame(){raf=0;var vh=innerHeight;sY+=(scrollY-sY)*.13;if(Math.abs(scrollY-sY)<.4)sY=scrollY;var sy=sY,H=M.H,fc=force;force=false;
  if(sy<H*1.5){var sc=innerWidth<700?.55:1,p=clamp(sy/H,0,1.2);cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;
   L.forEach(function(l){var y=clamp(sy*l.ps,-140,140)*sc;l.el.style.transform="translate3d("+(cx*l.pd*10).toFixed(2)+"px,"+(y+cy*l.pd*10).toFixed(2)+"px,0)"});
+  if(innerWidth<700){if(fc){stage.style.opacity="";stage.style.transform="";collage.style.transform="";collage.style.opacity=""}}else{
   var o=clamp((p-.35)/.65,0,1);stage.style.opacity=(1-o*.6).toFixed(3);stage.style.transform="translate3d(0,"+(-o*24).toFixed(1)+"px,0) scale("+(1-o*.03).toFixed(4)+")";
-  var eo=clamp((p-.25)/.6,0,1);collage.style.transform="translate3d("+(eo*8).toFixed(2)+"vw,"+(-eo*6).toFixed(2)+"vh,0) rotate("+(eo*7).toFixed(2)+"deg)";collage.style.opacity=(1-eo).toFixed(3)}
+  var eo=clamp((p-.25)/.6,0,1);collage.style.transform="translate3d("+(eo*8).toFixed(2)+"vw,"+(-eo*6).toFixed(2)+"vh,0) rotate("+(eo*7).toFixed(2)+"deg)";collage.style.opacity=(1-eo).toFixed(3)}}
  var rt=M.reelTop-sy,rpv=clamp((vh-rt)/(vh+M.reelH),0,1).toFixed(3),exv=clamp((vh*.5-(rt+M.reelH))/(vh*.5),0,1).toFixed(3),tpv=clamp((vh*.62-(M.tlTop-sy))/M.tlH,0,1).toFixed(3);
  if(rpv!==Lrp){Lrp=rpv;reel.style.setProperty("--rp",rpv)}
  var ent=clamp((vh-rt)/(vh*.9),0,1).toFixed(3),rwv=exv+"|"+ent;if(PIN){var pp=clamp((sy-M.srTop-M.srCut)/Math.max(1,M.srH-M.srCut-vh),0,1),pe=pp<.5?2*pp*pp:1-Math.pow(-2*pp+2,2)/2,pk=pe.toFixed(4);
