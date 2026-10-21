@@ -594,7 +594,7 @@ main{display:block}
 }
 
 /* the cat sits calmly: breathes, sways her tail, blinks now and then; no walking or hopping */
-.cat-mover{left:clamp(24px,6vw,96px)}
+.cat-mover{left:0;will-change:transform}.cat-flip{will-change:transform}
 @media (prefers-reduced-motion:no-preference){
  .cat-mover,.cat-flip,.cat-mover .cat-btn:not(.hop):not(.react),.cat-run:hover .cat-mover{animation:none!important;transform:none}
  .cat-btn:not(.react) .c-body{animation:cBreath 3.4s ease-in-out infinite}
@@ -633,7 +633,7 @@ main{display:block}
         <div class="cat-run" id="cat-run"><div class="cat-mover" id="cat-mover"><span class="catch-tag" id="catch-tag" aria-hidden="true">Tap me!</span><span class="meow" id="meow" aria-hidden="true">Meow!</span><span class="cat-flip"><button class="cat-btn" id="cat" type="button" aria-label="Black cat. Tap it to hear it meow"><span class="cat-bang" aria-hidden="true">!</span><svg viewBox="0 0 110 124" aria-hidden="true">
 <g class="c-tail"><path d="M72 117c17 3 30-5 28-21-1-8-9-10-10-3 0 11-7 16-19 15z" fill="#151514"/></g>
 <g class="c-body"><path d="M29 119c-6-15-2-33 11-42 8-5 22-5 30 0 13 9 17 27 11 42-12 4-40 4-52 0z" fill="#151514"/>
-<ellipse cx="64" cy="118.5" rx="8" ry="5" fill="#151514" stroke="#3B3A37" stroke-width="1.2"/><path d="M61 120.5v-3M65 120.5v-3" stroke="#3B3A37" stroke-width="1" stroke-linecap="round"/></g>
+</g><g class="c-foot"><ellipse cx="64" cy="118.5" rx="8" ry="5" fill="#151514" stroke="#3B3A37" stroke-width="1.2"/><path d="M61 120.5v-3M65 120.5v-3" stroke="#3B3A37" stroke-width="1" stroke-linecap="round"/></g>
 <g class="c-head">
 <path d="M19 60c-3-18 1-35 10-53 8 9 15 15 26 15s19-6 27-16c9 18 13 36 9 54-3 17-17 27-36 27S22 77 19 60z" fill="#151514"/>
 <g class="c-ears"><path d="M30 15l-3 21 12-9zM80 14l-11 13 13 8z" fill="#F2A5A0"/></g>
@@ -991,6 +991,32 @@ if(fine&&!rm){var pups=[].slice.call(catBtn.querySelectorAll(".c-pup")),flipEl=c
  document.addEventListener("pointermove",function(e){if(e.pointerType!=="mouse")return;ep.x=e.clientX;ep.y=e.clientY;if(!eraf)eraf=requestAnimationFrame(eyeFrame)},{passive:true})}
 catBtn.addEventListener("click",function(){catRun.classList.add("caught");catBurst();clearTimeout(catchT);catchT=setTimeout(function(){catRun.classList.remove("caught")},1600);meow();meowEl.classList.add("show");catBtn.classList.remove("hop");void catBtn.offsetWidth;
  clearTimeout(meowT);meowT=setTimeout(function(){meowEl.classList.remove("show")},1300)});
+
+
+/* Cat roaming: she sits, looks around, then strolls to a new spot along the line with a soft waddle,
+   turning smoothly to face where she goes. Hover or a tap makes her stop; she rests while the hero is off screen. */
+(function(){if(rm||!catRun||!catMover)return;
+ var flip=catMover.querySelector(".cat-flip"),svg=catBtn.querySelector("svg"),paw=svg.querySelector(".c-paw"),foot=svg.querySelector(".c-foot"),tail=svg.querySelector(".c-tail"),
+  x=0,face=1,faceNow=1,state="sit",until=performance.now()+1800,from=0,to=0,dist=0,walked=0,phase=0,last=0,hold=false,vis=true,raf2=0;
+ function run(){return Math.max(0,catRun.clientWidth-catMover.offsetWidth)}
+ function pick(){var R=run(),t;do{t=Math.random()*R}while(Math.abs(t-x)<Math.min(80,R*.3)&&R>40);return t}
+ function step(now){raf2=0;var dt=Math.min(.05,(now-(last||now))/1000);last=now;
+  if(hold||catRun.classList.contains("caught")){until=now+1500;if(state==="walk"){state="sit"}}
+  else if(state==="sit"&&now>until){to=pick();from=x;dist=Math.abs(to-from);walked=0;face=to>from?-1:1;state=face===faceNow?"walk":"turn"}
+  if(state==="turn"){faceNow+=(face-faceNow)*Math.min(1,dt*9);if(Math.abs(face-faceNow)<.04){faceNow=face;state="walk"}}
+  if(state==="walk"){var k=dist?walked/dist:1,sp=72*(.35+.65*Math.min(1,Math.min(k,1-k)*5)),d=Math.min(dist-walked,sp*dt);walked+=d;x=from+(to>from?d+walked-d:-(walked));phase+=d/9;
+   if(walked>=dist-.5){x=to;state="sit";until=now+2200+Math.random()*3200;phase=0}}
+  var wob=state==="walk"?Math.sin(phase):0,bob=state==="walk"?-Math.abs(Math.sin(phase))*3:0;
+  catMover.style.transform="translate3d("+x.toFixed(1)+"px,"+bob.toFixed(2)+"px,0) rotate("+(wob*3.5).toFixed(2)+"deg)";
+  flip.style.transform="scaleX("+(Math.abs(faceNow)<.06?.06*Math.sign(faceNow||1):faceNow).toFixed(3)+")";
+  if(paw&&!catBtn.classList.contains("react"))paw.style.transform=state==="walk"?"translateY("+(-Math.max(0,Math.sin(phase))*5).toFixed(2)+"px)":"";
+  if(foot)foot.style.transform=state==="walk"?"translateY("+(-Math.max(0,-Math.sin(phase))*5).toFixed(2)+"px)":"";
+  if(tail)tail.style.animationDuration=state==="walk"?"1.1s":"";
+  if(vis)raf2=requestAnimationFrame(step)}
+ catBtn.addEventListener("pointerenter",function(){hold=true});catBtn.addEventListener("pointerleave",function(){hold=false});
+ catBtn.addEventListener("click",function(){if(paw)paw.style.transform=""});
+ if("IntersectionObserver" in window){var io2=new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis&&!raf2){last=0;raf2=requestAnimationFrame(step)}});io2.observe(catRun)}
+ raf2=requestAnimationFrame(step)})();
 
 /* ================= PHASE 3 ================= */
 /* Magnetic buttons: pointer within a small halo pulls the button up to 9px. Desktop mouse only. */
