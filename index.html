@@ -231,17 +231,17 @@ main{position:relative;display:block;overflow-x:clip}
 /* 02 clients: the title sits in the middle and the logos float around it in their own colours */
 /* fits one screen at 100% zoom: section padding + ring = the viewport height */
 #clients{padding-top:clamp(24px,4.5vh,60px);padding-bottom:clamp(24px,4.5vh,60px)}
-.cring{position:relative;height:clamp(440px,calc(100svh - clamp(48px,9vh,120px)),820px)}
+.cring{position:relative;height:clamp(440px,calc(100svh - clamp(48px,9vh,120px)),820px);container-type:size}
 .sec .cring-mid h2{font-size:clamp(2.8rem,min(7.4vw,12.5vh),7.5rem)}
 .cring-mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;text-align:center}
 .sec .cring-mid h2{margin:0 0 16px}
 .cring-mid .c-note{margin:0}
 .corbs{list-style:none;margin:0;padding:0}
 .corb{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));transition:transform .35s var(--ease)}
-.corb img{display:block;width:auto;height:auto;max-height:clamp(44px,min(5.2vw,8.6vh),88px);max-width:clamp(150px,min(16vw,27vh),270px)}
-.corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:clamp(64px,min(7vw,11.5vh),120px)}
-.corb.logo-whites img,.corb.logo-ministry img{max-width:clamp(180px,min(19vw,32vh),320px)}
-.corb.logo-deef img{max-height:clamp(40px,min(4.4vw,7.2vh),74px)}
+.corb img{display:block;width:auto;height:auto;max-height:min(6.4cqw,11cqh);max-width:min(18.3cqw,32cqh)}
+.corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:min(8.4cqw,14.3cqh)}
+.corb.logo-whites img,.corb.logo-ministry img{max-width:min(22cqw,38.5cqh)}
+.corb.logo-deef img{max-height:min(6.2cqw,10.5cqh)}
 @media (hover:hover){.corb:hover{transform:translate(-50%,-50%) rotate(0deg) scale(1.12)}}
 @media (prefers-reduced-motion:no-preference){
  .corbs .corb{transition:transform .6s cubic-bezier(.3,1.4,.5,1) var(--d,0s),opacity .4s var(--ease) var(--d,0s)}
@@ -250,14 +250,14 @@ main{position:relative;display:block;overflow-x:clip}
 }
 @media (max-width:699px){
  #clients{padding-top:clamp(56px,14vw,90px);padding-bottom:clamp(56px,14vw,90px)}
- .cring{height:auto;display:grid;gap:40px}
+ .cring{height:auto;display:grid;gap:40px;container-type:normal}
  .cring-mid{position:static;transform:none;text-align:left}
  .corbs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 20px;align-items:center;justify-items:center}
  .corb,.js .corbs:not(.in) .corb{position:static;transform:rotate(var(--r,0deg))}
  .js .corbs:not(.in) .corb{transform:rotate(var(--r,0deg)) scale(.5)}
  .corb img{max-width:100%;max-height:56px}
  .corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:76px}
- .corb.logo-whites img{max-width:100%}
+ .corb.logo-whites img,.corb.logo-ministry img{max-width:100%}
 }
 
 /* 03 work */
@@ -503,13 +503,31 @@ main{display:block}
  .reel-wrap{max-width:min(100%,calc((100svh - var(--cut) - clamp(80px,15vh,192px) - clamp(2.6rem,min(6.6vw,11.5vh),7rem) * 1.9 - 60px) * 16 / 9));margin-inline:auto}
  /* work: one row; the TVC takes half the width, the two campaigns a quarter each */
  .work-grid{row-gap:clamp(28px,4vh,48px);max-width:min(100%,calc((100svh - clamp(80px,15vh,192px) - clamp(2.6rem,min(6.6vw,11.5vh),7rem) * 1.9 - 74px - var(--cut)) * 32 / 9));margin-inline:0}
- #work{padding-bottom:calc(var(--cut) * .8 + clamp(24px,4vh,60px))}
+ .sec:has(+ .slant){padding-bottom:calc(var(--cut) + clamp(40px,7.5vh,96px))}
  .w-a{grid-column:1/7;grid-row:1}
  .w-c{grid-column:7/10;grid-row:1}
  .w-d{grid-column:10/13;grid-row:1;margin-top:0}
  .w-a .ttl-wrap{font-size:clamp(1.8rem,min(3vw,5.4vh),3.4rem)}
  .w-c .ttl-wrap,.w-d .ttl-wrap{font-size:clamp(1.1rem,min(1.6vw,2.9vh),1.8rem)}
 }
+
+/* ===== SCROLL SCENES (desktop, motion allowed; JS adds .pin to <html>) =====
+   Showreel: the poster grows from a card under the title to the full screen.
+   Work: the section holds still while the projects slide past sideways, posters drifting inside their frames. */
+.pin #showreel{padding:var(--cut) 0 0;height:calc(var(--cut) + 230svh)}
+.pin .reel-pin{position:sticky;top:0;height:100svh;overflow:hidden}
+.pin .reel-pin h2{position:absolute;left:5vw;top:clamp(36px,7vh,90px);z-index:3;margin:0;will-change:transform,opacity}
+.pin #showreel .reel-wrap{position:absolute;inset:0;max-width:none;margin:0;transform-origin:50% 72%}
+.pin #showreel .reel{aspect-ratio:auto;width:100%;height:100%}
+.pin #work{padding:0;height:var(--wh,300svh)}
+.pin .work-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,4vh,48px);padding-bottom:calc(var(--cut) * .55)}
+.pin .work-head{padding:0 5vw}
+.pin .work-head h2{margin:0}
+.pin .work-grid{display:flex;align-items:flex-start;gap:clamp(40px,5vw,96px);width:max-content;max-width:none;margin:0;padding:0 5vw;will-change:transform}
+.pin .work-grid .card{flex:none;width:calc(min(54svh,40vw) * 16 / 9);margin:0}
+.pin .work-grid .card:nth-child(2){margin-top:clamp(30px,7vh,80px)}
+.pin .work-grid .ttl-wrap,.pin .w-a .ttl-wrap,.pin .w-c .ttl-wrap,.pin .w-d .ttl-wrap{font-size:clamp(1.8rem,min(3.2vw,5.6vh),3.6rem)}
+.pin .work-grid .zoom{inset:0 -4%;will-change:transform}
 </style>
 </head>
 <body>
@@ -555,11 +573,11 @@ main{display:block}
 <section class="sec slant dark" id="showreel" style="--sbg:var(--bg-inverse)">
   <div class="deco d-disc" data-speed="-.4" aria-hidden="true"><span class="dz"></span></div>
   <div class="deco d-star" data-speed=".55" aria-hidden="true"><span class="dz"><svg viewBox="0 0 9 9" shape-rendering="crispEdges"><rect x="4" y="0" width="1" height="1" fill="var(--border)"/><rect x="3" y="1" width="1" height="1" fill="var(--border)"/><rect x="4" y="1" width="1" height="1" fill="var(--pop)"/><rect x="5" y="1" width="1" height="1" fill="var(--border)"/><rect x="3" y="2" width="1" height="1" fill="var(--border)"/><rect x="4" y="2" width="1" height="1" fill="var(--pop)"/><rect x="5" y="2" width="1" height="1" fill="var(--border)"/><rect x="2" y="3" width="1" height="1" fill="var(--border)"/><rect x="3" y="3" width="1" height="1" fill="var(--border)"/><rect x="4" y="3" width="1" height="1" fill="var(--pop)"/><rect x="5" y="3" width="1" height="1" fill="var(--border)"/><rect x="6" y="3" width="1" height="1" fill="var(--border)"/><rect x="0" y="4" width="1" height="1" fill="var(--border)"/><rect x="1" y="4" width="1" height="1" fill="var(--border)"/><rect x="2" y="4" width="1" height="1" fill="var(--pop)"/><rect x="3" y="4" width="1" height="1" fill="var(--pop)"/><rect x="4" y="4" width="1" height="1" fill="var(--pop)"/><rect x="5" y="4" width="1" height="1" fill="var(--pop)"/><rect x="6" y="4" width="1" height="1" fill="var(--pop)"/><rect x="7" y="4" width="1" height="1" fill="var(--border)"/><rect x="8" y="4" width="1" height="1" fill="var(--border)"/><rect x="2" y="5" width="1" height="1" fill="var(--border)"/><rect x="3" y="5" width="1" height="1" fill="var(--border)"/><rect x="4" y="5" width="1" height="1" fill="var(--pop)"/><rect x="5" y="5" width="1" height="1" fill="var(--border)"/><rect x="6" y="5" width="1" height="1" fill="var(--border)"/><rect x="3" y="6" width="1" height="1" fill="var(--border)"/><rect x="4" y="6" width="1" height="1" fill="var(--pop)"/><rect x="5" y="6" width="1" height="1" fill="var(--border)"/><rect x="3" y="7" width="1" height="1" fill="var(--border)"/><rect x="4" y="7" width="1" height="1" fill="var(--pop)"/><rect x="5" y="7" width="1" height="1" fill="var(--border)"/><rect x="4" y="8" width="1" height="1" fill="var(--border)"/></svg></span></div>
-  <h2 class="disp mk rv"><span class="ln" data-x="-140"><span>From brief</span></span><span class="ln" data-x="140"><span>to <span class="word-hl">experience.</span></span></span></h2>
+  <div class="reel-pin"><h2 class="disp mk rv"><span class="ln" data-x="-140"><span>From brief</span></span><span class="ln" data-x="140"><span>to <span class="word-hl">experience.</span></span></span></h2>
   <div class="reel-wrap rv"><div class="reel" id="reel"><img class="reel-poster" src="media/showreel-poster.jpg" alt="" loading="lazy" decoding="async">
     <p class="soon" id="soon" role="status"></p>
     <div class="bar"><button class="play" id="play" type="button" aria-disabled="true"><span class="tri" aria-hidden="true"></span><span class="pl">Play showreel</span></button><span class="track2" aria-hidden="true"></span><span class="time" aria-hidden="true">01:16</span></div>
-  </div></div>
+  </div></div></div>
 </section>
 
 <section class="sec gridbg" id="clients">
@@ -576,6 +594,7 @@ main{display:block}
 
 <section class="sec s-work" id="work">
   <div class="deco d-word outline" data-x="-420" aria-hidden="true"><span class="mq"><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span></span></div>
+  <div class="work-pin">
   <div class="work-head">
     <div><h2 class="disp mk rv"><span class="ln"><span>Based on</span></span><span class="ln"><span><span class="hl">true projects.</span></span></span></h2></div>
   </div>
@@ -583,6 +602,7 @@ main{display:block}
   <button class="card rv w-a has-video" type="button" data-id="01" data-cat="video" data-c="var(--accent)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/kazyon-tvc-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Kazyon</span><em>Egypt · TV commercial</em></span></span></button>
   <button class="card rv w-c has-video" type="button" data-id="03" data-cat="launch" data-c="var(--highlight)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/elvan-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Elvan</span><em>Egypt · ibon hard candy launch</em></span></span></button>
   <button class="card rv w-d has-video" type="button" data-id="04" data-cat="influencer" data-c="var(--accent)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/influencer-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Influencer Campaign</span><em>Egypt · Store visits, recipes &amp; hacks</em></span></span></button>
+  </div>
   </div>
 </section>
 
@@ -748,9 +768,10 @@ function drawPX(sy,vh){if(rm)return;var sc=innerWidth<700?.55:1;
 
 /* Scroll-linked work: hero parallax + collage exit, reel drift/dim, timeline line. One rAF, transforms only. */
 var L=$$("#hero [data-ps]").map(function(el){return{el:el,ps:+el.dataset.ps,pd:+el.dataset.pd||0}});
-var Lrp="",Lex="",Ltp="",tx=0,ty=0,cx=0,cy=0,raf=0,force=true,M={H:0,reelTop:0,reelH:0,tlTop:0,tlH:0};
+var PIN=false,Lpin="",Lwk="",Lrp="",Lex="",Ltp="",tx=0,ty=0,cx=0,cy=0,raf=0,force=true,M={H:0,reelTop:0,reelH:0,tlTop:0,tlH:0};
 function docTop(e){var y=0;while(e){y+=e.offsetTop;e=e.offsetParent}return y}
-function measure(){M.H=hero.offsetHeight;M.reelTop=docTop(reel);M.reelH=reel.offsetHeight;M.tlTop=docTop(tl);M.tlH=tl.offsetHeight;force=true;measurePX();buildJourney();if(rm)drawJourney(scrollY,innerHeight)}
+function measure(){PIN=innerWidth>=700&&!rm;root.classList.toggle("pin",PIN);if(PIN){var wg=$(".work-grid");M.wX=Math.max(0,-parseFloat(getComputedStyle($("#about")).marginTop)||0)+Math.round(innerHeight*.15);$("#work").style.setProperty("--wh",(innerHeight+Math.max(0,wg.scrollWidth-innerWidth)+M.wX)+"px")}else{$("#work").style.removeProperty("--wh");rw.style.transform="";$(".reel-pin h2").style.cssText="";$(".work-grid").style.transform=""}
+ M.sr=$("#showreel");M.srTop=docTop(M.sr);M.srH=M.sr.offsetHeight;M.srCut=parseFloat(getComputedStyle(M.sr).paddingTop)||0;M.w=$("#work");M.wTop=docTop(M.w);M.wH=M.w.offsetHeight;M.wg=$(".work-grid");M.wD=Math.max(0,M.wg.scrollWidth-innerWidth);M.zs=$$(".work-grid .zoom");M.H=hero.offsetHeight;M.reelTop=docTop(reel);M.reelH=reel.offsetHeight;M.tlTop=docTop(tl);M.tlH=tl.offsetHeight;force=true;measurePX();buildJourney();if(rm)drawJourney(scrollY,innerHeight)}
 measure();
 function frame(){raf=0;var vh=innerHeight;sY+=(scrollY-sY)*.13;if(Math.abs(scrollY-sY)<.4)sY=scrollY;var sy=sY,H=M.H,fc=force;force=false;
  if(sy<H*1.5){var sc=innerWidth<700?.55:1,p=clamp(sy/H,0,1.2);cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;
@@ -759,7 +780,11 @@ function frame(){raf=0;var vh=innerHeight;sY+=(scrollY-sY)*.13;if(Math.abs(scrol
   var eo=clamp((p-.25)/.6,0,1);collage.style.transform="translate3d("+(eo*8).toFixed(2)+"vw,"+(-eo*6).toFixed(2)+"vh,0) rotate("+(eo*7).toFixed(2)+"deg)";collage.style.opacity=(1-eo).toFixed(3)}
  var rt=M.reelTop-sy,rpv=clamp((vh-rt)/(vh+M.reelH),0,1).toFixed(3),exv=clamp((vh*.5-(rt+M.reelH))/(vh*.5),0,1).toFixed(3),tpv=clamp((vh*.62-(M.tlTop-sy))/M.tlH,0,1).toFixed(3);
  if(rpv!==Lrp){Lrp=rpv;reel.style.setProperty("--rp",rpv)}
- var ent=clamp((vh-rt)/(vh*.9),0,1).toFixed(3),rwv=exv+"|"+ent;if(rwv!==Lex){Lex=rwv;rw.style.opacity=(1-exv*.45).toFixed(3);rw.style.transform="scale("+((.88+.12*ent)*(1-exv*.05)).toFixed(4)+")"}
+ var ent=clamp((vh-rt)/(vh*.9),0,1).toFixed(3),rwv=exv+"|"+ent;if(PIN){var pp=clamp((sy-M.srTop-M.srCut)/Math.max(1,M.srH-M.srCut-vh),0,1),pe=pp<.5?2*pp*pp:1-Math.pow(-2*pp+2,2)/2,pk=pe.toFixed(4);
+  if(pk!==Lpin){Lpin=pk;rw.style.opacity="1";rw.style.transform="scale("+(.56+.44*pe).toFixed(4)+")";var h2=M.sr.querySelector(".reel-pin h2"),ho=clamp(1-pp*2.4,0,1);h2.style.opacity=ho.toFixed(3);h2.style.transform="translate3d(0,"+(-pp*60).toFixed(1)+"px,0)"}
+  var wp=clamp((sy-M.wTop)/Math.max(1,M.wH-vh-(M.wX||0)),0,1),wk=wp.toFixed(4);
+  if(wk!==Lwk){Lwk=wk;var x=-wp*M.wD;M.wg.style.transform="translate3d("+x.toFixed(1)+"px,0,0)";var vw=innerWidth;M.zs.forEach(function(z){var r=z.parentNode.getBoundingClientRect(),c=(r.left+r.width/2-vw/2)/vw;z.style.transform="translate3d("+clamp(-c*3.5,-3.5,3.5).toFixed(2)+"%,0,0)"})}}
+ else if(rwv!==Lex){Lex=rwv;rw.style.opacity=(1-exv*.45).toFixed(3);rw.style.transform="scale("+((.88+.12*ent)*(1-exv*.05)).toFixed(4)+")"}
  if(tpv!==Ltp){Ltp=tpv;tl.style.setProperty("--tp",tpv)}
  drawPX(sy,vh);drawJourney(sy,vh);
  if(Math.abs(tx-cx)>.002||Math.abs(ty-cy)>.002||Math.abs(scrollY-sY)>.4)raf=requestAnimationFrame(frame)}
