@@ -228,20 +228,33 @@ main{position:relative;display:block;overflow-x:clip}
 .reel{cursor:pointer}
 .reel b{z-index:1;background:var(--highlight);color:var(--fg-on-lime);border:2px solid var(--border);padding:10px 22px;font:400 clamp(1.4rem,4vw,3rem) var(--font-display);text-transform:uppercase;transform:rotate(-4deg)}
 
-/* 02 clients */
-.d-cwin{right:5vw;top:clamp(60px,9vw,120px);width:min(270px,26vw)}.d-cwin .dz{transform:rotate(3deg)}
-.crows{display:grid;gap:16px;margin:0 -5vw;padding:4px 0 10px;overflow:hidden}
-.crow-x{margin-left:-14vw;width:max-content}.crow-x2{margin-left:-34vw}
-.crow{display:flex;gap:14px;list-style:none;padding:0 14px 0 0;margin:0;width:max-content}
-/* client logos sit on white tiles so every brand shows in its real colours */
-.crow li{display:grid;place-items:center;height:clamp(84px,9vw,120px);padding:0 clamp(22px,2.4vw,36px);border:2px solid var(--border);background:var(--tile);box-shadow:4px 4px 0 var(--shadow-hard)}
-.crow li img{display:block;width:auto;height:auto;max-height:clamp(40px,4.6vw,64px);max-width:clamp(120px,14vw,200px)}
-.crow .logo-lulu img,.crow .logo-pharco img,.crow .logo-noush img,.crow .logo-egypt-foods img{max-height:clamp(52px,5.8vw,80px)}
-.crow .logo-whites img{max-width:clamp(150px,17vw,240px)}
-.crow .logo-ministry-culture img{max-height:clamp(52px,5.8vw,80px)}
-.crow .logo-deef img{max-height:clamp(34px,3.6vw,48px)}
-
-.c-note{margin-top:22px}
+/* 02 clients: the title sits in the middle and the logos float around it in their own colours */
+.cring{position:relative;height:clamp(560px,54vw,740px)}
+.cring-mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;text-align:center}
+.sec .cring-mid h2{margin:0 0 16px}
+.cring-mid .c-note{margin:0}
+.corbs{list-style:none;margin:0;padding:0}
+.corb{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));transition:transform .35s var(--ease)}
+.corb img{display:block;width:auto;height:auto;max-height:clamp(36px,3.8vw,54px);max-width:clamp(110px,12vw,180px)}
+.corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:clamp(48px,5.2vw,74px)}
+.corb.logo-whites img{max-width:clamp(140px,15vw,220px)}
+.corb.logo-deef img{max-height:clamp(30px,3.2vw,44px)}
+@media (hover:hover){.corb:hover{transform:translate(-50%,-50%) rotate(0deg) scale(1.12)}}
+@media (prefers-reduced-motion:no-preference){
+ .corbs .corb{transition:transform .6s cubic-bezier(.3,1.4,.5,1) var(--d,0s),opacity .4s var(--ease) var(--d,0s)}
+ .js .corbs:not(.in) .corb{opacity:0;transform:translate(-50%,-50%) rotate(var(--r,0deg)) scale(.5)}
+ .corbs.in .corb:hover{transition-delay:0s}
+}
+@media (max-width:699px){
+ .cring{height:auto;display:grid;gap:40px}
+ .cring-mid{position:static;transform:none;text-align:left}
+ .corbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 14px;align-items:center;justify-items:center}
+ .corb,.js .corbs:not(.in) .corb{position:static;transform:rotate(var(--r,0deg))}
+ .js .corbs:not(.in) .corb{transform:rotate(var(--r,0deg)) scale(.5)}
+ .corb img{max-width:96px;max-height:40px}
+ .corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:54px}
+ .corb.logo-whites img{max-width:104px}
+}
 
 /* 03 work */
 .s-work{background:var(--bg)}
@@ -527,12 +540,15 @@ main{display:block}
 </section>
 
 <section class="sec gridbg" id="clients">
-  <h2 class="disp mk rv"><span class="ln"><span>Guest <span class="hl">stars.</span></span></span></h2>
-  <div class="crows" role="group" aria-label="Clients">
-    <div class="crow-x" data-x="-520"><ul class="crow"><li class="logo-kazyon"><img src="media/logos/kazyon.webp" alt="Kazyon" decoding="async"></li><li class="logo-lulu"><img src="media/logos/lulu.webp" alt="Lulu Hypermarket" decoding="async"></li><li class="logo-misr-pharmacies"><img src="media/logos/misr-pharmacies.webp" alt="Misr Pharmacies" decoding="async"></li><li class="logo-noush"><img src="media/logos/noush.webp" alt="Noush" decoding="async"></li><li class="logo-egypt-foods"><img src="media/logos/egypt-foods.webp" alt="Egypt Foods" decoding="async"></li><li class="logo-al-amal-al-sharif"><img src="media/logos/al-amal-al-sharif.webp" alt="Al-Amal Al-Sharif" decoding="async"></li><li class="logo-elvan"><img src="media/logos/elvan.webp" alt="Elvan" decoding="async"></li><li class="logo-kazyon" aria-hidden="true"><img src="media/logos/kazyon.webp" alt="" decoding="async"></li><li class="logo-lulu" aria-hidden="true"><img src="media/logos/lulu.webp" alt="" decoding="async"></li><li class="logo-misr-pharmacies" aria-hidden="true"><img src="media/logos/misr-pharmacies.webp" alt="" decoding="async"></li><li class="logo-noush" aria-hidden="true"><img src="media/logos/noush.webp" alt="" decoding="async"></li><li class="logo-egypt-foods" aria-hidden="true"><img src="media/logos/egypt-foods.webp" alt="" decoding="async"></li><li class="logo-al-amal-al-sharif" aria-hidden="true"><img src="media/logos/al-amal-al-sharif.webp" alt="" decoding="async"></li><li class="logo-elvan" aria-hidden="true"><img src="media/logos/elvan.webp" alt="" decoding="async"></li><li class="logo-kazyon" aria-hidden="true"><img src="media/logos/kazyon.webp" alt="" decoding="async"></li><li class="logo-lulu" aria-hidden="true"><img src="media/logos/lulu.webp" alt="" decoding="async"></li><li class="logo-misr-pharmacies" aria-hidden="true"><img src="media/logos/misr-pharmacies.webp" alt="" decoding="async"></li><li class="logo-noush" aria-hidden="true"><img src="media/logos/noush.webp" alt="" decoding="async"></li><li class="logo-egypt-foods" aria-hidden="true"><img src="media/logos/egypt-foods.webp" alt="" decoding="async"></li><li class="logo-al-amal-al-sharif" aria-hidden="true"><img src="media/logos/al-amal-al-sharif.webp" alt="" decoding="async"></li><li class="logo-elvan" aria-hidden="true"><img src="media/logos/elvan.webp" alt="" decoding="async"></li><li class="logo-kazyon" aria-hidden="true"><img src="media/logos/kazyon.webp" alt="" decoding="async"></li><li class="logo-lulu" aria-hidden="true"><img src="media/logos/lulu.webp" alt="" decoding="async"></li><li class="logo-misr-pharmacies" aria-hidden="true"><img src="media/logos/misr-pharmacies.webp" alt="" decoding="async"></li><li class="logo-noush" aria-hidden="true"><img src="media/logos/noush.webp" alt="" decoding="async"></li><li class="logo-egypt-foods" aria-hidden="true"><img src="media/logos/egypt-foods.webp" alt="" decoding="async"></li><li class="logo-al-amal-al-sharif" aria-hidden="true"><img src="media/logos/al-amal-al-sharif.webp" alt="" decoding="async"></li><li class="logo-elvan" aria-hidden="true"><img src="media/logos/elvan.webp" alt="" decoding="async"></li></ul></div>
-    <div class="crow-x crow-x2" data-x="520"><ul class="crow crow-2"><li class="logo-pharco"><img src="media/logos/pharco.webp" alt="Pharco" decoding="async"></li><li class="logo-amoun"><img src="media/logos/amoun.webp" alt="Amoun" decoding="async"></li><li class="logo-acino"><img src="media/logos/acino.webp" alt="Acino" decoding="async"></li><li class="logo-whites"><img src="media/logos/whites.webp" alt="Whites" decoding="async"></li><li class="logo-ministry"><img src="media/logos/ministry.webp" alt="Ministry of Municipalities and Housing" decoding="async"></li><li class="logo-ministry-culture"><img src="media/logos/ministry-culture.webp" alt="Ministry of Culture" decoding="async"></li><li class="logo-alcon"><img src="media/logos/alcon.webp" alt="Alcon" decoding="async"></li><li class="logo-deef"><img src="media/logos/deef.webp" alt="DEEF" decoding="async"></li><li class="logo-pharco" aria-hidden="true"><img src="media/logos/pharco.webp" alt="" decoding="async"></li><li class="logo-amoun" aria-hidden="true"><img src="media/logos/amoun.webp" alt="" decoding="async"></li><li class="logo-acino" aria-hidden="true"><img src="media/logos/acino.webp" alt="" decoding="async"></li><li class="logo-whites" aria-hidden="true"><img src="media/logos/whites.webp" alt="" decoding="async"></li><li class="logo-ministry" aria-hidden="true"><img src="media/logos/ministry.webp" alt="" decoding="async"></li><li class="logo-ministry-culture" aria-hidden="true"><img src="media/logos/ministry-culture.webp" alt="" decoding="async"></li><li class="logo-alcon" aria-hidden="true"><img src="media/logos/alcon.webp" alt="" decoding="async"></li><li class="logo-deef" aria-hidden="true"><img src="media/logos/deef.webp" alt="" decoding="async"></li><li class="logo-pharco" aria-hidden="true"><img src="media/logos/pharco.webp" alt="" decoding="async"></li><li class="logo-amoun" aria-hidden="true"><img src="media/logos/amoun.webp" alt="" decoding="async"></li><li class="logo-acino" aria-hidden="true"><img src="media/logos/acino.webp" alt="" decoding="async"></li><li class="logo-whites" aria-hidden="true"><img src="media/logos/whites.webp" alt="" decoding="async"></li><li class="logo-ministry" aria-hidden="true"><img src="media/logos/ministry.webp" alt="" decoding="async"></li><li class="logo-ministry-culture" aria-hidden="true"><img src="media/logos/ministry-culture.webp" alt="" decoding="async"></li><li class="logo-alcon" aria-hidden="true"><img src="media/logos/alcon.webp" alt="" decoding="async"></li><li class="logo-deef" aria-hidden="true"><img src="media/logos/deef.webp" alt="" decoding="async"></li><li class="logo-pharco" aria-hidden="true"><img src="media/logos/pharco.webp" alt="" decoding="async"></li><li class="logo-amoun" aria-hidden="true"><img src="media/logos/amoun.webp" alt="" decoding="async"></li><li class="logo-acino" aria-hidden="true"><img src="media/logos/acino.webp" alt="" decoding="async"></li><li class="logo-whites" aria-hidden="true"><img src="media/logos/whites.webp" alt="" decoding="async"></li><li class="logo-ministry" aria-hidden="true"><img src="media/logos/ministry.webp" alt="" decoding="async"></li><li class="logo-ministry-culture" aria-hidden="true"><img src="media/logos/ministry-culture.webp" alt="" decoding="async"></li><li class="logo-alcon" aria-hidden="true"><img src="media/logos/alcon.webp" alt="" decoding="async"></li><li class="logo-deef" aria-hidden="true"><img src="media/logos/deef.webp" alt="" decoding="async"></li></ul></div>
+  <div class="cring">
+    <div class="cring-mid">
+      <h2 class="disp mk rv"><span class="ln"><span>Guest</span></span><span class="ln"><span><span class="hl">stars.</span></span></span></h2>
+      <p class="eb c-note">Egypt · KSA · UAE</p>
+    </div>
+    <ul class="corbs rv" aria-label="Clients">
+      <li class="corb logo-kazyon" style="--x:50.0%;--y:11.6%;--r:-7deg;--d:0ms"><img src="media/logos/kazyon.webp" alt="Kazyon" decoding="async" loading="lazy"></li><li class="corb logo-lulu" style="--x:67.3%;--y:12.0%;--r:2deg;--d:45ms"><img src="media/logos/lulu.webp" alt="Lulu Hypermarket" decoding="async" loading="lazy"></li><li class="corb logo-misr-pharmacies" style="--x:79.3%;--y:24.3%;--r:-3deg;--d:90ms"><img src="media/logos/misr-pharmacies.webp" alt="Misr Pharmacies" decoding="async" loading="lazy"></li><li class="corb logo-noush" style="--x:90.5%;--y:37.1%;--r:6deg;--d:135ms"><img src="media/logos/noush.webp" alt="Noush" decoding="async" loading="lazy"></li><li class="corb logo-egypt-foods" style="--x:89.2%;--y:54.0%;--r:1deg;--d:180ms"><img src="media/logos/egypt-foods.webp" alt="Egypt Foods" decoding="async" loading="lazy"></li><li class="corb logo-elvan" style="--x:86.9%;--y:70.8%;--r:-4deg;--d:225ms"><img src="media/logos/elvan.webp" alt="Elvan" decoding="async" loading="lazy"></li><li class="corb logo-al-amal-al-sharif" style="--x:73.2%;--y:81.1%;--r:5deg;--d:270ms"><img src="media/logos/al-amal-al-sharif.webp" alt="Al-Amal Al-Sharif" decoding="async" loading="lazy"></li><li class="corb logo-pharco" style="--x:58.9%;--y:90.7%;--r:0deg;--d:315ms"><img src="media/logos/pharco.webp" alt="Pharco" decoding="async" loading="lazy"></li><li class="corb logo-amoun" style="--x:41.8%;--y:87.6%;--r:-5deg;--d:360ms"><img src="media/logos/amoun.webp" alt="Amoun" decoding="async" loading="lazy"></li><li class="corb logo-acino" style="--x:25.0%;--y:83.7%;--r:4deg;--d:405ms"><img src="media/logos/acino.webp" alt="Acino" decoding="async" loading="lazy"></li><li class="corb logo-whites" style="--x:15.9%;--y:69.2%;--r:-1deg;--d:450ms"><img src="media/logos/whites.webp" alt="Whites" decoding="async" loading="lazy"></li><li class="corb logo-ministry" style="--x:7.6%;--y:54.3%;--r:-6deg;--d:495ms"><img src="media/logos/ministry.webp" alt="Ministry of Municipalities and Housing" decoding="async" loading="lazy"></li><li class="corb logo-ministry-culture" style="--x:12.5%;--y:38.1%;--r:3deg;--d:540ms"><img src="media/logos/ministry-culture.webp" alt="Ministry of Culture" decoding="async" loading="lazy"></li><li class="corb logo-alcon" style="--x:18.3%;--y:22.2%;--r:-2deg;--d:585ms"><img src="media/logos/alcon.webp" alt="Alcon" decoding="async" loading="lazy"></li><li class="corb logo-deef" style="--x:34.0%;--y:14.9%;--r:-7deg;--d:630ms"><img src="media/logos/deef.webp" alt="DEEF" decoding="async" loading="lazy"></li>
+    </ul>
   </div>
-  <p class="eb c-note">Egypt · KSA · UAE</p>
 </section>
 
 <section class="sec s-work" id="work">
