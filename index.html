@@ -229,16 +229,19 @@ main{position:relative;display:block;overflow-x:clip}
 .reel b{z-index:1;background:var(--highlight);color:var(--fg-on-lime);border:2px solid var(--border);padding:10px 22px;font:400 clamp(1.4rem,4vw,3rem) var(--font-display);text-transform:uppercase;transform:rotate(-4deg)}
 
 /* 02 clients: the title sits in the middle and the logos float around it in their own colours */
-.cring{position:relative;height:clamp(560px,54vw,740px)}
+/* fits one screen at 100% zoom: section padding + ring = the viewport height */
+#clients{padding-top:clamp(24px,4.5vh,60px);padding-bottom:clamp(24px,4.5vh,60px)}
+.cring{position:relative;height:clamp(440px,calc(100svh - clamp(48px,9vh,120px)),820px)}
+.sec .cring-mid h2{font-size:clamp(2.8rem,min(7.4vw,12.5vh),7.5rem)}
 .cring-mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;text-align:center}
 .sec .cring-mid h2{margin:0 0 16px}
 .cring-mid .c-note{margin:0}
 .corbs{list-style:none;margin:0;padding:0}
 .corb{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));transition:transform .35s var(--ease)}
-.corb img{display:block;width:auto;height:auto;max-height:clamp(36px,3.8vw,54px);max-width:clamp(110px,12vw,180px)}
-.corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:clamp(48px,5.2vw,74px)}
-.corb.logo-whites img{max-width:clamp(140px,15vw,220px)}
-.corb.logo-deef img{max-height:clamp(30px,3.2vw,44px)}
+.corb img{display:block;width:auto;height:auto;max-height:clamp(30px,min(3.4vw,5.6vh),52px);max-width:clamp(96px,min(11vw,18vh),170px)}
+.corb.logo-lulu img,.corb.logo-pharco img,.corb.logo-noush img,.corb.logo-egypt-foods img,.corb.logo-ministry-culture img{max-height:clamp(40px,min(4.6vw,7.6vh),70px)}
+.corb.logo-whites img{max-width:clamp(120px,min(14vw,23vh),210px)}
+.corb.logo-deef img{max-height:clamp(26px,min(2.9vw,4.8vh),42px)}
 @media (hover:hover){.corb:hover{transform:translate(-50%,-50%) rotate(0deg) scale(1.12)}}
 @media (prefers-reduced-motion:no-preference){
  .corbs .corb{transition:transform .6s cubic-bezier(.3,1.4,.5,1) var(--d,0s),opacity .4s var(--ease) var(--d,0s)}
@@ -246,6 +249,7 @@ main{position:relative;display:block;overflow-x:clip}
  .corbs.in .corb:hover{transition-delay:0s}
 }
 @media (max-width:699px){
+ #clients{padding-top:clamp(56px,14vw,90px);padding-bottom:clamp(56px,14vw,90px)}
  .cring{height:auto;display:grid;gap:40px}
  .cring-mid{position:static;transform:none;text-align:left}
  .corbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 14px;align-items:center;justify-items:center}
