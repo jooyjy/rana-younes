@@ -519,15 +519,6 @@ main{display:block}
 .pin .reel-pin h2{position:absolute;left:5vw;top:clamp(36px,7vh,90px);z-index:3;margin:0;will-change:transform,opacity}
 .pin #showreel .reel-wrap{position:absolute;inset:0;max-width:none;margin:0;transform-origin:50% 72%}
 .pin #showreel .reel{aspect-ratio:auto;width:100%;height:100%}
-.pin #work{padding:0;height:var(--wh,300svh)}
-.pin .work-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,4vh,48px);padding-bottom:calc(var(--cut) * .55)}
-.pin .work-head{padding:0 5vw}
-.pin .work-head h2{margin:0}
-.pin .work-grid{display:flex;align-items:flex-start;gap:clamp(40px,5vw,96px);width:max-content;max-width:none;margin:0;padding:0 5vw;will-change:transform}
-.pin .work-grid .card{flex:none;width:calc(min(54svh,40vw) * 16 / 9);margin:0}
-.pin .work-grid .card:nth-child(2){margin-top:clamp(30px,7vh,80px)}
-.pin .work-grid .ttl-wrap,.pin .w-a .ttl-wrap,.pin .w-c .ttl-wrap,.pin .w-d .ttl-wrap{font-size:clamp(1.8rem,min(3.2vw,5.6vh),3.6rem)}
-.pin .work-grid .zoom{inset:0 -4%;will-change:transform}
 
 /* cartoon cat: eyes follow the pointer; a tap makes her look surprised, wave, squint happily and sing a little */
 .cat-btn{position:relative}.cat-btn svg{overflow:visible}
@@ -559,6 +550,47 @@ main{display:block}
  @keyframes cBang{0%{opacity:0;transform:translateY(8px) scale(.3) rotate(12deg)}60%{opacity:1;transform:translateY(-4px) scale(1.2) rotate(12deg)}100%{opacity:0;transform:translateY(-10px) scale(1) rotate(12deg)}}
  @keyframes cSquash{0%{transform:none}8%{transform:scaleY(.9) scaleX(1.06)}18%{transform:scaleY(1.06) scaleX(.97)}28%{transform:none}}
  @keyframes cNote{0%{opacity:0;transform:translate(0,0) scale(.5) rotate(0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-70px) scale(1.1) rotate(var(--rt))}}
+}
+
+/* ===== PROJECTS ON THE LINE: the site's journey line runs through each project.
+   A project waits in grey; when the line reaches its pin it lands: colour comes back, the card settles,
+   a muted preview starts so it reads as a video, and the steps tick off one by one. ===== */
+.work-route{--g:clamp(28px,6vw,110px);position:relative;display:grid;gap:clamp(30px,8vh,100px);margin-top:clamp(10px,4vh,50px)}
+.stop{position:relative;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:var(--g);align-items:center;min-height:min(80svh,720px)}
+.stop:nth-child(even){grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.stop:nth-child(even) .card{order:2}
+.stop .card{grid-column:auto!important;grid-row:auto!important;margin:0!important;transform:rotate(var(--r));transition:transform .8s cubic-bezier(.3,1.45,.5,1),filter .6s,opacity .5s}
+.stop .card .ttl-wrap{font-size:clamp(1.9rem,min(3.4vw,6vh),3.8rem)}
+.stop-pin{position:absolute;top:50%;left:calc((100% - var(--g)) * 7 / 12 + var(--g) / 2);width:0;height:0;z-index:3}
+.stop:nth-child(even) .stop-pin{left:calc((100% - var(--g)) * 5 / 12 + var(--g) / 2)}
+.stop-pin i{position:absolute;left:-13px;top:-13px;width:26px;height:26px;background:var(--bg);border:3px solid var(--border);transform:rotate(45deg);transition:background .3s,transform .5s cubic-bezier(.3,1.6,.5,1)}
+.stop.landed .stop-pin i{background:var(--highlight);transform:rotate(45deg) scale(1.3)}
+.stop-txt{display:grid;gap:14px;justify-items:start;transition:opacity .5s,transform .6s var(--ease)}
+.stop-role{margin:0;font:700 .72rem var(--font-mono);text-transform:uppercase;letter-spacing:.08em;background:var(--fg);color:var(--bg);padding:4px 9px}
+.steps{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.steps li{font:700 .72rem var(--font-mono);text-transform:uppercase;border:2px solid var(--border);padding:5px 10px;background:var(--tile);transition:background .3s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.steps li:before{content:"\25CB  "}
+.steps li.ok{background:var(--highlight);transform:translateY(-2px)}
+.steps li.ok:before{content:"\2713  "}
+.stop-line{margin:0;max-width:40ch;color:var(--fg-muted);font-size:clamp(.95rem,1.1vw,1.08rem)}
+.card .pv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
+.card.playing .pv{opacity:1}
+.pv-tag{position:absolute;right:14px;top:14px;z-index:2;background:var(--bg);color:var(--fg);border:2px solid var(--border);padding:4px 9px;font:700 .62rem var(--font-mono);text-transform:uppercase;opacity:0;transform:translateY(-6px);transition:opacity .4s,transform .4s}
+.card.playing .pv-tag{opacity:1;transform:none}
+.pv-bar{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(var(--black-rgb),.45);z-index:2;opacity:0;transition:opacity .4s}
+.pv-bar i{display:block;height:100%;width:0;background:var(--highlight)}
+.card.playing .pv-bar{opacity:1}
+.stop-boom{position:absolute;width:0;height:0;z-index:4;pointer-events:none}
+.stop-boom i{position:absolute;left:-7px;top:-7px;width:14px;height:14px;border:2px solid var(--border);background:var(--c);animation:spark 1.1s cubic-bezier(.15,.8,.3,1) forwards}
+.stop-boom b{position:absolute;left:-40px;top:-40px;width:80px;height:80px;border-radius:50%;border:4px solid var(--highlight);animation:ring .7s cubic-bezier(.15,.8,.3,1) forwards}
+@media (prefers-reduced-motion:no-preference){
+ .js .stop:not(.landed) .card{transform:rotate(calc(var(--r) * -3)) scale(.88);filter:grayscale(1);opacity:.45}
+ .js .stop:not(.landed) .stop-txt{opacity:.3;transform:translateY(18px)}
+}
+@media (max-width:699px){
+ .stop,.stop:nth-child(even){grid-template-columns:1fr;min-height:0;row-gap:22px}
+ .stop:nth-child(even) .card{order:0}
+ .stop-pin{display:none}
 }
 </style>
 </head>
@@ -641,14 +673,36 @@ main{display:block}
 
 <section class="sec s-work" id="work">
   <div class="deco d-word outline" data-x="-420" aria-hidden="true"><span class="mq"><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span><span>Work&nbsp;·&nbsp;</span></span></div>
-  <div class="work-pin">
   <div class="work-head">
     <div><h2 class="disp mk rv"><span class="ln"><span>Based on</span></span><span class="ln"><span><span class="hl">true projects.</span></span></span></h2></div>
   </div>
-  <div class="work-grid">
-  <button class="card rv w-a has-video" type="button" data-id="01" data-cat="video" data-c="var(--accent)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/kazyon-tvc-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Kazyon</span><em>Egypt · TV commercial</em></span></span></button>
-  <button class="card rv w-c has-video" type="button" data-id="03" data-cat="launch" data-c="var(--highlight)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/elvan-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Elvan</span><em>Egypt · ibon hard candy launch</em></span></span></button>
-  <button class="card rv w-d has-video" type="button" data-id="04" data-cat="influencer" data-c="var(--accent)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/influencer-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Influencer Campaign</span><em>Egypt · Store visits, recipes &amp; hacks</em></span></span></button>
+  <div class="work-route">
+  <div class="stop" style="--r:-1.6deg">
+    <button class="card rv w-a has-video" type="button" data-id="01" data-cat="video" data-c="var(--accent)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/kazyon-tvc-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span><span class="pv-tag" aria-hidden="true">Preview · tap to watch with sound</span><span class="pv-bar" aria-hidden="true"><i></i></span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Kazyon</span><em>Egypt · TV commercial</em></span></span></button>
+    <span class="stop-pin" aria-hidden="true"><i></i></span>
+    <div class="stop-txt" data-speed=".06">
+      <p class="stop-role">Project Manager</p>
+      <ul class="steps" aria-label="What I did"><li>Brief</li><li>Production teams</li><li>Multi-location shoot</li><li>Approvals</li><li>On air</li></ul>
+      <p class="stop-line">Led a high-budget, multi-location video campaign, managing production teams, timelines and approvals.</p>
+    </div>
+  </div>
+  <div class="stop" style="--r:1.6deg">
+    <button class="card rv w-c has-video" type="button" data-id="03" data-cat="launch" data-c="var(--highlight)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/elvan-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span><span class="pv-tag" aria-hidden="true">Preview · tap to watch with sound</span><span class="pv-bar" aria-hidden="true"><i></i></span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Elvan</span><em>Egypt · ibon hard candy launch</em></span></span></button>
+    <span class="stop-pin" aria-hidden="true"><i></i></span>
+    <div class="stop-txt" data-speed=".06">
+      <p class="stop-role">Project Manager &amp; Strategy Lead</p>
+      <ul class="steps" aria-label="What I did"><li>Strategy</li><li>Roadshow truck</li><li>Toll-gate sampling</li><li>Billboards</li></ul>
+      <p class="stop-line">Led strategy and execution of a nationwide multi-channel launch for Elvan&rsquo;s hard candy line.</p>
+    </div>
+  </div>
+  <div class="stop" style="--r:-1.2deg">
+    <button class="card rv w-d has-video" type="button" data-id="04" data-cat="influencer" data-c="var(--accent)" aria-haspopup="dialog"><span class="img" data-cursor="Play"><span class="par"><span class="media"><span class="zoom" style="background:var(--color-charcoal) url(media/influencer-poster.jpg) center/cover"></span></span></span><span class="playbadge" aria-hidden="true">▶ Watch</span><span class="pv-tag" aria-hidden="true">Preview · tap to watch with sound</span><span class="pv-bar" aria-hidden="true"><i></i></span></span><span class="ttl-wrap" data-speed=".1"><span class="ttl"><span class="t-name">Influencer Campaign</span><em>Egypt · Store visits, recipes &amp; hacks</em></span></span></button>
+    <span class="stop-pin" aria-hidden="true"><i></i></span>
+    <div class="stop-txt" data-speed=".06">
+      <p class="stop-role">Project Manager</p>
+      <ul class="steps" aria-label="What I did"><li>Brief</li><li>Store visits</li><li>Recipes &amp; hacks</li><li>Vertical content</li></ul>
+      <p class="stop-line">Influencers visited Kazyon stores across governorates, sharing recipes, tips and hacks in vertical, post-produced content.</p>
+    </div>
   </div>
   </div>
 </section>
@@ -789,19 +843,46 @@ PX=$$("#main [data-speed],#main [data-x]").map(function(el){return{el:el,sp:+el.
 function measurePX(){PX.forEach(function(q){q.t=docTop(q.sec);q.h=q.sec.offsetHeight;q.last=""})}
 function buildJourney(){var W=mainEl.clientWidth,H=mainEl.offsetHeight,m=innerWidth<700?.022:.026,pts=[[W*m,0]];
  var nar=innerWidth<700;if(nar)pts=[[7,0]];
- $$("#main>section").forEach(function(sct,i){pts.push([nar?7:(i%2?W*(1-m):W*m),sct.offsetTop+sct.offsetHeight*.5])});
+ var mr=mainEl.getBoundingClientRect();J.stopPts=[];
+ $$("#main>section").forEach(function(sct,i){if(sct.id==="work"&&!nar){$$("#work .stop-pin").forEach(function(sp){var r=sp.getBoundingClientRect(),pt=[r.left-mr.left,r.top-mr.top];pts.push(pt);J.stopPts.push(pt)});return}
+  pts.push([nar?7:(i%2?W*(1-m):W*m),sct.offsetTop+sct.offsetHeight*.5])});
  var cs=$("#contact"),cb=$("#contact a.btn");if(cs&&cb){pts.pop();var ex=nar?Math.max(7,cb.offsetLeft-12):Math.max(W*m,cb.offsetLeft-16),ey=cs.offsetTop+cb.offsetTop+cb.offsetHeight/2;pts.push([nar?7:W*m,cs.offsetTop+cb.offsetTop-40]);pts.push([ex,ey]);
   J.bx=cb.offsetLeft+cb.offsetWidth/2;J.by=ey}
  var d="M"+pts[0][0].toFixed(1)+" 0";
  for(var k=1;k<pts.length;k++){var a=pts[k-1],b=pts[k],dy=b[1]-a[1];d+=" C"+a[0].toFixed(1)+" "+(a[1]+dy*.55).toFixed(1)+" "+b[0].toFixed(1)+" "+(b[1]-dy*.55).toFixed(1)+" "+b[0].toFixed(1)+" "+b[1].toFixed(1)}
  J.svg.setAttribute("width",W);J.svg.setAttribute("height",H);J.svg.setAttribute("viewBox","0 0 "+W+" "+H);
- J.o.setAttribute("d",d);J.i.setAttribute("d",d);J.len=J.i.getTotalLength();J.top=docTop(mainEl);J.h=H;J.last=-1;
+ J.o.setAttribute("d",d);J.i.setAttribute("d",d);J.len=J.i.getTotalLength();
+ J.marks=J.stopPts.map(function(pt){var best=0,bd=1e12;for(var t=0;t<=J.len;t+=10){var q=J.i.getPointAtLength(t),dd=(q.x-pt[0])*(q.x-pt[0])+(q.y-pt[1])*(q.y-pt[1]);if(dd<bd){bd=dd;best=t}}return best});J.top=docTop(mainEl);J.h=H;J.last=-1;
  J.start=J.top-innerHeight*.55;J.end=Math.max(J.start+1,document.documentElement.scrollHeight-innerHeight)}
-function drawJourney(sy,vh){var p=rm?1:clamp((sy-J.start)/(J.end-J.start),0,1);p=Math.round(p*3000)/3000;if(p===J.last)return;J.last=p;
+function drawJourney(sy,vh){var p=rm?1:clamp((sy-J.start)/(J.end-J.start),0,1);landStops(p*J.len,vh);p=Math.round(p*3000)/3000;if(p===J.last)return;J.last=p;
  var off=String(1-p);J.o.style.strokeDashoffset=off;J.i.style.strokeDashoffset=off;
  J.tip.style.opacity=(rm||p<=0)?0:1;if(rm)return;
  var pt=J.i.getPointAtLength(p*J.len);J.tip.setAttribute("transform","translate("+pt.x.toFixed(1)+" "+pt.y.toFixed(1)+")");
  if(p>=.985&&!J.boomed){J.boomed=true;landBoom()}else if(p<.9&&J.boomed){J.boomed=false}}
+
+
+/* Projects on the line: a project lands when the journey line reaches its pin (on phones, when it scrolls into view). */
+var STOPS=null;
+function stopBoom(st){if(rm)return;var pin=st.querySelector(".stop-pin"),b=document.createElement("span"),C=["var(--highlight)","var(--accent)","var(--accent-2)","var(--bg)"],h="<b></b>";b.className="stop-boom";
+ for(var i=0;i<10;i++)h+='<i style="--a:'+(i*36)+'deg;--d:'+(60+Math.random()*50).toFixed(0)+'px;--c:'+C[i%4]+'"></i>';b.innerHTML=h;pin.appendChild(b);setTimeout(function(){b.remove()},1200)}
+function preview(st,on){var card=st.querySelector(".card"),P0=PROJECTS[card.dataset.id]||{},v=card.querySelector("video.pv");
+ if(on){if(rm||!P0.video||!VIDEOS[P0.video])return;if(!v){v=document.createElement("video");v.className="pv";v.muted=true;v.loop=true;v.playsInline=true;v.setAttribute("playsinline","");v.setAttribute("aria-hidden","true");v.preload="none";
+   var V=VIDEOS[P0.video];v.src=location.protocol==="file:"?(V.local||V.mp4):V.mp4;var bar=card.querySelector(".pv-bar i");
+   v.addEventListener("timeupdate",function(){if(v.duration)bar.style.width=(v.currentTime/v.duration*100).toFixed(1)+"%"});
+   v.addEventListener("playing",function(){card.classList.add("playing")});card.querySelector(".media").appendChild(v)}
+  var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}
+ else if(v){v.pause();card.classList.remove("playing")}}
+function setLanded(st,on){if(st.classList.contains("landed")===on)return;st.classList.toggle("landed",on);var li=st.querySelectorAll(".steps li");
+ if(on){stopBoom(st);[].forEach.call(li,function(l,j){clearTimeout(l._t);l._t=setTimeout(function(){l.classList.add("ok")},rm?0:380+j*230)})}
+ else[].forEach.call(li,function(l){clearTimeout(l._t);l.classList.remove("ok")});
+ preview(st,on)}
+function landStops(cur,vh){STOPS=STOPS||$$("#work .stop");var nar=innerWidth<700;STOPS.forEach(function(st,i){var on;
+  if(nar||!J.marks||J.marks[i]==null){var r=st.getBoundingClientRect();on=r.top<vh*.72&&r.bottom>vh*.15}
+  else{on=cur>=J.marks[i]-4;var r2=st.getBoundingClientRect();if(r2.bottom<-vh*.2||r2.top>vh*1.2)on=on&&false}
+  setLanded(st,on)})}
+/* pause previews that leave the screen or when the tab is hidden */
+document.addEventListener("visibilitychange",function(){if(document.hidden)$$("video.pv").forEach(function(v){v.pause()})});
+
 /* Arrival: when the line reaches "Start a conversation" it bursts and the button lights up. Replays if you scroll back up and down. */
 var boomEl=$("#boom"),ctaBtn=$("#contact a.btn"),boomT=0;
 function landBoom(){if(rm||!boomEl)return;boomEl.style.left=J.bx+"px";boomEl.style.top=J.by+"px";
@@ -817,8 +898,8 @@ function drawPX(sy,vh){if(rm)return;var sc=innerWidth<700?.55:1;
 var L=$$("#hero [data-ps]").map(function(el){return{el:el,ps:+el.dataset.ps,pd:+el.dataset.pd||0}});
 var PIN=false,Lpin="",Lwk="",Lrp="",Lex="",Ltp="",tx=0,ty=0,cx=0,cy=0,raf=0,force=true,M={H:0,reelTop:0,reelH:0,tlTop:0,tlH:0};
 function docTop(e){var y=0;while(e){y+=e.offsetTop;e=e.offsetParent}return y}
-function measure(){PIN=innerWidth>=700&&!rm;root.classList.toggle("pin",PIN);if(PIN){var wg=$(".work-grid");M.wX=Math.max(0,-parseFloat(getComputedStyle($("#about")).marginTop)||0)+Math.round(innerHeight*.15);$("#work").style.setProperty("--wh",(innerHeight+Math.max(0,wg.scrollWidth-innerWidth)+M.wX)+"px")}else{$("#work").style.removeProperty("--wh");rw.style.transform="";$(".reel-pin h2").style.cssText="";$(".work-grid").style.transform=""}
- M.sr=$("#showreel");M.srTop=docTop(M.sr);M.srH=M.sr.offsetHeight;M.srCut=parseFloat(getComputedStyle(M.sr).paddingTop)||0;M.w=$("#work");M.wTop=docTop(M.w);M.wH=M.w.offsetHeight;M.wg=$(".work-grid");M.wD=Math.max(0,M.wg.scrollWidth-innerWidth);M.zs=$$(".work-grid .zoom");M.H=hero.offsetHeight;M.reelTop=docTop(reel);M.reelH=reel.offsetHeight;M.tlTop=docTop(tl);M.tlH=tl.offsetHeight;force=true;measurePX();buildJourney();if(rm)drawJourney(scrollY,innerHeight)}
+function measure(){PIN=innerWidth>=700&&!rm;root.classList.toggle("pin",PIN);if(!PIN){rw.style.transform="";$(".reel-pin h2").style.cssText=""}
+ M.sr=$("#showreel");M.srTop=docTop(M.sr);M.srH=M.sr.offsetHeight;M.srCut=parseFloat(getComputedStyle(M.sr).paddingTop)||0;M.H=hero.offsetHeight;M.reelTop=docTop(reel);M.reelH=reel.offsetHeight;M.tlTop=docTop(tl);M.tlH=tl.offsetHeight;force=true;measurePX();buildJourney();if(rm)drawJourney(scrollY,innerHeight)}
 measure();
 function frame(){raf=0;var vh=innerHeight;sY+=(scrollY-sY)*.13;if(Math.abs(scrollY-sY)<.4)sY=scrollY;var sy=sY,H=M.H,fc=force;force=false;
  if(sy<H*1.5){var sc=innerWidth<700?.55:1,p=clamp(sy/H,0,1.2);cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;
@@ -828,9 +909,7 @@ function frame(){raf=0;var vh=innerHeight;sY+=(scrollY-sY)*.13;if(Math.abs(scrol
  var rt=M.reelTop-sy,rpv=clamp((vh-rt)/(vh+M.reelH),0,1).toFixed(3),exv=clamp((vh*.5-(rt+M.reelH))/(vh*.5),0,1).toFixed(3),tpv=clamp((vh*.62-(M.tlTop-sy))/M.tlH,0,1).toFixed(3);
  if(rpv!==Lrp){Lrp=rpv;reel.style.setProperty("--rp",rpv)}
  var ent=clamp((vh-rt)/(vh*.9),0,1).toFixed(3),rwv=exv+"|"+ent;if(PIN){var pp=clamp((sy-M.srTop-M.srCut)/Math.max(1,M.srH-M.srCut-vh),0,1),pe=pp<.5?2*pp*pp:1-Math.pow(-2*pp+2,2)/2,pk=pe.toFixed(4);
-  if(pk!==Lpin){Lpin=pk;rw.style.opacity="1";rw.style.transform="scale("+(.56+.44*pe).toFixed(4)+")";var h2=M.sr.querySelector(".reel-pin h2"),ho=clamp(1-pp*2.4,0,1);h2.style.opacity=ho.toFixed(3);h2.style.transform="translate3d(0,"+(-pp*60).toFixed(1)+"px,0)"}
-  var wp=clamp((sy-M.wTop)/Math.max(1,M.wH-vh-(M.wX||0)),0,1),wk=wp.toFixed(4);
-  if(wk!==Lwk){Lwk=wk;var x=-wp*M.wD;M.wg.style.transform="translate3d("+x.toFixed(1)+"px,0,0)";var vw=innerWidth;M.zs.forEach(function(z){var r=z.parentNode.getBoundingClientRect(),c=(r.left+r.width/2-vw/2)/vw;z.style.transform="translate3d("+clamp(-c*3.5,-3.5,3.5).toFixed(2)+"%,0,0)"})}}
+  if(pk!==Lpin){Lpin=pk;rw.style.opacity="1";rw.style.transform="scale("+(.56+.44*pe).toFixed(4)+")";var h2=M.sr.querySelector(".reel-pin h2"),ho=clamp(1-pp*2.4,0,1);h2.style.opacity=ho.toFixed(3);h2.style.transform="translate3d(0,"+(-pp*60).toFixed(1)+"px,0)"}}
  else if(rwv!==Lex){Lex=rwv;rw.style.opacity=(1-exv*.45).toFixed(3);rw.style.transform="scale("+((.88+.12*ent)*(1-exv*.05)).toFixed(4)+")"}
  if(tpv!==Ltp){Ltp=tpv;tl.style.setProperty("--tp",tpv)}
  drawPX(sy,vh);drawJourney(sy,vh);
